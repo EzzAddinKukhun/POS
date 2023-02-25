@@ -28,15 +28,7 @@ function SidebarNavigators() {
               <i className="fa-solid fa-plus"></i>
             </div>
             <div className={Styles.navigatorName}>
-              <Link to="">New Category</Link>
-            </div>
-          </div>
-          <div className={Styles.navigator}>
-            <div className={Styles.navigatorIcon}>
-              <i className="fa-solid fa-money-bill"></i>
-            </div>
-            <div className={Styles.navigatorName}>
-              <Link to="">Purchases</Link>
+              <Link to="categories">New Category</Link>
             </div>
           </div>
           <div className={Styles.navigator}>
