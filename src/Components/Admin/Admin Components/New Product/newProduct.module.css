@@ -1,0 +1,66 @@
+.outlet{
+    width: 85%;
+    margin-left: auto;
+}
+
+
+.form {
+    display: flex;
+    width: 95%;
+    margin: auto;
+    padding-top: 30px ;
+    /* padding-bottom: 10px; */
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.textAlignCenter{
+    text-align: center;
+}
+
+.sectionOne{
+    width: 55%;
+}
+
+.sectionTwo{
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+}
+
+.uploadedImageContainer{
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: red; */
+}
+
+.uploadedImg{
+    width: 80%;
+    height: 95%;
+}
+
+.uploadButtonContainer{
+    height: 10%;
+    display: flex;
+    justify-content: center;
+}
+
+.saveBtnContainer{
+    width: 100%;
+    height: 40px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.addNewProductBtn{
+    width: 95%;
+    margin: auto;
+    height: 40px;
+    display: flex;
+    justify-content: end;
+    padding-top: 25px;
+    margin-bottom: 10px;
+}

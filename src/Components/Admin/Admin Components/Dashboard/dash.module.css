@@ -1,0 +1,96 @@
+.outlet{
+    width: 85%;
+    margin-left: auto;
+}
+
+.appBar{
+    background-color: #0D87AC;
+}
+
+.card{
+    width: 250px;
+    height: 120px; 
+    background-color: red;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px; 
+    box-shadow: 10px 10px 10px 1px rgb(215, 215, 215);
+}
+
+.cardIcon{
+    width: 40%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 40px;
+}
+
+.cardData{
+    width: 60%;
+    height: 80px;
+    color: white;
+    text-align: center;
+}
+
+.counter{
+    font-size: 30px;
+}
+
+.cardsContainer{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.charts{
+    height: 450px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.pieChartDetails{
+    width: 40%;
+    background-color: blue;
+    padding: 10px;
+}
+
+.pieChartContainer{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-radius: 5px;
+    box-shadow: 1px 3px 21px 1px rgb(167, 167, 167)
+}
+
+.barChartContainer{
+
+    width: 55%;
+    height: 100%;
+    display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    box-shadow: 1px 3px 21px 1px rgb(167, 167, 167);
+
+}
+
+.barChartContainerHeader{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+}

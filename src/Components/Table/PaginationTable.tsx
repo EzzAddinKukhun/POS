@@ -13,7 +13,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { width } from "@mui/system";
 
 function PaginationTable() {
-  const [range, setRange] = React.useState(5);
+  const [range, setRange] = React.useState(10);
   const [selectedPage, setSelectedPage] = useState(1);
   let [searchToken, setSearchToken] = useState("");
 
@@ -262,6 +262,7 @@ function PaginationTable() {
         return (
           <tr>
             <td>{key + 1}</td>
+            <td>{key + 1}</td>
             <td>{element.name}</td>
             <td>{element.code}</td>
             <td>{element.code}</td>
@@ -329,6 +330,7 @@ function PaginationTable() {
       <table className={Styles.table}>
         <thead className={Styles.tableHeader}>
           <th>#</th>
+          <th>Thumbnail</th>
           <th>Name</th>
           <th>Code</th>
           <th>Category</th>
