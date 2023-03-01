@@ -2,3 +2,13 @@
     width: 85%;
     margin-left: auto;
 }
+
+.addNewProductBtn{
+    width: 95%;
+    margin: auto;
+    height: 40px;
+    display: flex;
+    justify-content: end;
+    padding-top: 25px;
+    margin-bottom: 10px;
+}

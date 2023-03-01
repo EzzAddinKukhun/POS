@@ -1,20 +1,22 @@
 import * as React from "react";
 import Backdrop from "@mui/material/Backdrop";
+import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import ProductForm from "./ProductForm";
-import Styles from "./newProduct.module.css";
+import CategoryForm from "./CategoryForm";
+import Styles from "../New Product/newProduct.module.css";
 import AddIcon from "@mui/icons-material/Add";
+import { stat } from "fs";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 1000,
-  height: 600,
+  width: 400,
+  height: 300,
   bgcolor: "background.paper",
   border: "1px solid #000",
   borderRadius: 2,
@@ -22,19 +24,18 @@ const style = {
   p: 4,
 };
 
-export default function NewProductModal() {
+function NewCategoryModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
-    <div>
+    <>
       <div className={Styles.addNewProductBtn}>
-        <Button  onClick={handleOpen} variant="contained" endIcon={<AddIcon />}>
-          Add New Product
+        <Button onClick={handleOpen} variant="contained" endIcon={<AddIcon />}>
+          Add New Category
         </Button>
       </div>
-
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -50,11 +51,13 @@ export default function NewProductModal() {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <h2 className={Styles.textAlignCenter}>Add New Product</h2>
-            <ProductForm />
+            <h2 style={{ textAlign: "center" }}>Add New Category</h2>
+            <CategoryForm imgName={""} categoryName = {""} categoryId={0} status="add" />
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </>
   );
 }
+
+export default NewCategoryModal;
