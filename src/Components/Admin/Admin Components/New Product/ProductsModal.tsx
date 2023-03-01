@@ -22,19 +22,25 @@ const style = {
   p: 4,
 };
 
-export default function NewProductModal() {
+interface Props {
+  openStatus: boolean;
+  closeModal: () => void;
+  modalFunctionality: string
+}
+
+export default function ProductsModal({ openStatus, closeModal, modalFunctionality }: Props) {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    closeModal();
+  };
+
+  React.useEffect(() => {
+    setOpen(openStatus);
+  }, [openStatus]);
 
   return (
-    <div>
-      <div className={Styles.addNewProductBtn}>
-        <Button  onClick={handleOpen} variant="contained" endIcon={<AddIcon />}>
-          Add New Product
-        </Button>
-      </div>
-
+    <>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -50,11 +56,13 @@ export default function NewProductModal() {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <h2 className={Styles.textAlignCenter}>Add New Product</h2>
-            <ProductForm />
+            {
+              modalFunctionality == "add"? <h2 className={Styles.textAlignCenter}>Add New Product</h2> : <h2 className={Styles.textAlignCenter}>Update Product</h2>
+            }     
+            <ProductForm modalFunctionality={modalFunctionality}/>
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </>
   );
 }

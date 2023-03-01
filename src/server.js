@@ -6,6 +6,7 @@ const multer = require('multer');
 const fs = require('fs');
 app.use(express.static(__dirname + '/CategoriesImgs'));
 app.use(express.static(__dirname + '/imgs'));
+app.use(express.static(__dirname + '/ProductsImgs'));
 
 const path = require('path');
 const formidable = require('formidable');
@@ -48,9 +49,32 @@ const upload = multer({
     storage: storage
 })
 
+
+
+// UPLOAD PRODUCTS FILE IMAGE
+const productsImgStorage = multer.diskStorage({
+
+    destination: (req, file, callback) => {
+        return callback(null, __dirname + "/ProductsImgs")
+    },
+    filename: (req, file, callback) => {
+        callback(null, file.originalname)
+    }
+})
+
+const uploadProductImg = multer({
+    storage: productsImgStorage
+})
+
+
+
+
 app.listen('5000', () => {
     console.log("express is running at 5000")
 });
+
+
+
 
 app.post('/addNewCategory', upload.single('file'), (req, res) => {
     let categoryName = req.body.name;
@@ -67,6 +91,8 @@ app.post('/addNewCategory', upload.single('file'), (req, res) => {
     })
 
 })
+
+
 
 app.get('/Categories', (req, res) => {
     mysqlConnection.query('SELECT * FROM categories', (err, rows, fileds) => {
@@ -140,6 +166,83 @@ app.put('/updateCategory/:id', upload.single('file'), (req, res) => {
             console.log(err);
         }
     })
+
+})
+
+
+
+//PRODUCTS ADD/UPDATE/GET/DELETE CRUD
+app.post('/addNewProduct', uploadProductImg.single('file'), (req, res) => {
+
+    let productName = req.body.productName;
+    let productCode = req.body.productCode;
+    let productCategory = req.body.productCategory;
+    let productQuantity = req.body.productQuantity;
+    let productCost = req.body.productCost;
+    let productPrice = req.body.productPrice;
+    let productDesc = req.body.productDesc;
+
+    if (req.file == undefined) {
+        return res.json({
+            message: 'no file uploaded'
+        });
+
+    }
+    else {
+        let productImg = req.file.filename;
+        let insertQuery = "insert into products (`id`,`productName`,`productCode`,`productCategory`,`productQuantity`,`productCost`,`productPrice`,`productDescription`,`productImg`) VALUES (?)";
+        let values = [0, productName, productCode, productCategory, productQuantity, productCost, productPrice, productDesc, productImg];
+        mysqlConnection.query(insertQuery, [values], (err) => {
+        if (err) {
+            console.log(err)
+            return res.json({
+                message: 'error'
+            });
+        }
+        return res.json({
+            message: 'success'
+        });
+    })
+    }
+
+
+})
+
+app.get('/Products', (req, res) => {
+    mysqlConnection.query('SELECT * FROM products', (err, rows, fileds) => {
+        if (!err) {
+            return (res.json(rows));
+        }
+        else {
+            console.log(err);
+        }
+    })
+})
+
+app.delete('/deleteProduct/:id', (req, res) => {
+
+    let deleteQuery = "DELETE FROM products where id = ?";
+    let productId = req.params.id;
+
+    mysqlConnection.query(`SELECT productImg FROM products where id='${req.params.id}'`, (err, rows, fileds) => {
+        if (!err) {
+            let oldImgName = rows[0].productImg;
+            let imagePath = __dirname + '/ProductsImgs/' + oldImgName;
+            fs.unlinkSync(imagePath);
+            mysqlConnection.query(deleteQuery, [productId], (err) => {
+                if (err) {
+                    console.log(err);
+                }
+                return res.json({
+                    message: 'success'
+                });
+            })
+        }
+        else {
+            console.log(err);
+        }
+    })
+
 
 })
 

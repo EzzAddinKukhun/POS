@@ -10,6 +10,9 @@ import CategoryForm from "./CategoryForm";
 import Styles from "../New Product/newProduct.module.css";
 import AddIcon from "@mui/icons-material/Add";
 import { stat } from "fs";
+
+
+
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
