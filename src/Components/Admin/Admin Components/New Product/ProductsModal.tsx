@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Products } from "../../../Table/PaginationTable";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -22,13 +23,15 @@ const style = {
   p: 4,
 };
 
+
 interface Props {
   openStatus: boolean;
   closeModal: () => void;
-  modalFunctionality: string
+  modalFunctionality: string;
+  productData: Products; 
 }
 
-export default function ProductsModal({ openStatus, closeModal, modalFunctionality }: Props) {
+export default function ProductsModal({ openStatus, closeModal, modalFunctionality, productData }: Props) {
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -59,7 +62,7 @@ export default function ProductsModal({ openStatus, closeModal, modalFunctionali
             {
               modalFunctionality == "add"? <h2 className={Styles.textAlignCenter}>Add New Product</h2> : <h2 className={Styles.textAlignCenter}>Update Product</h2>
             }     
-            <ProductForm modalFunctionality={modalFunctionality}/>
+            <ProductForm  modalFunctionality={modalFunctionality} productData ={productData} closeForm={handleClose}/>
           </Box>
         </Fade>
       </Modal>

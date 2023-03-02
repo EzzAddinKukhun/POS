@@ -74,6 +74,7 @@ app.listen('5000', () => {
 });
 
 
+//CATEGORIES ADD/UPDATE/GET/DELETE CRUD
 
 
 app.post('/addNewCategory', upload.single('file'), (req, res) => {
@@ -92,8 +93,6 @@ app.post('/addNewCategory', upload.single('file'), (req, res) => {
 
 })
 
-
-
 app.get('/Categories', (req, res) => {
     mysqlConnection.query('SELECT * FROM categories', (err, rows, fileds) => {
         if (!err) {
@@ -104,7 +103,6 @@ app.get('/Categories', (req, res) => {
         }
     })
 })
-
 
 app.delete('/deleteCategory/:id', (req, res) => {
 
@@ -193,16 +191,16 @@ app.post('/addNewProduct', uploadProductImg.single('file'), (req, res) => {
         let insertQuery = "insert into products (`id`,`productName`,`productCode`,`productCategory`,`productQuantity`,`productCost`,`productPrice`,`productDescription`,`productImg`) VALUES (?)";
         let values = [0, productName, productCode, productCategory, productQuantity, productCost, productPrice, productDesc, productImg];
         mysqlConnection.query(insertQuery, [values], (err) => {
-        if (err) {
-            console.log(err)
+            if (err) {
+                console.log(err)
+                return res.json({
+                    message: 'error'
+                });
+            }
             return res.json({
-                message: 'error'
+                message: 'success'
             });
-        }
-        return res.json({
-            message: 'success'
-        });
-    })
+        })
     }
 
 
@@ -243,6 +241,53 @@ app.delete('/deleteProduct/:id', (req, res) => {
         }
     })
 
+
+})
+
+app.put('/updateProduct/:id', uploadProductImg.single('file'), (req, res) => {
+    console.log(req.body); 
+
+    let productName = req.body.productName;
+    let productCode = req.body.productCode;
+    let productCategory = req.body.productCategory;
+    let productQuantity = req.body.productQuantity;
+    let productCost = req.body.productCost;
+    let productPrice = req.body.productPrice;
+    let productDesc = req.body.productDesc;
+
+    let fileName;
+    let updateQuery;
+
+    console.log(req.file); 
+    if (req.file == undefined) {
+        updateQuery = `UPDATE products SET productName='${productName}', productCode='${productCode}',productCategory='${productCategory}',productQuantity='${productQuantity}',productCost='${productCost}',productPrice='${productPrice}',productDescription='${productDesc}' where id = ?`;
+    }
+    else {
+        fileName = req.file.filename;
+        updateQuery = `UPDATE products SET productImg='${fileName}', productName='${productName}', productCode='${productCode}',productCategory='${productCategory}',productQuantity='${productQuantity}',productCost='${productCost}',productPrice='${productPrice}',productDescription='${productDesc}' where id = ?`;
+    }
+
+    mysqlConnection.query(`SELECT productImg FROM products where id ='${req.params.id}'`, (err, rows, fileds) => {
+        if (!err) {
+            if (req.file != undefined) {
+                let oldImgName = rows[0].productImg;
+                console.log(oldImgName); 
+                let imagePath = __dirname + '/ProductsImgs/' + oldImgName;
+                fs.unlinkSync(imagePath);
+            }
+            mysqlConnection.query(updateQuery, [req.params.id], (err) => {
+                if (err) {
+                    console.log(err);
+                }
+                return res.json({
+                    message: 'success'
+                });
+            })
+        }
+        else {
+            console.log(err);
+        }
+    })
 
 })
 

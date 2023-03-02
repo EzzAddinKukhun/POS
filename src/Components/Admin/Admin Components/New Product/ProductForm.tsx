@@ -10,25 +10,28 @@ import Download from "../../../../imgs/download.png";
 import PaginationTable from "../../../Table/PaginationTable";
 import SaveIcon from "@mui/icons-material/Save";
 import { Formik, Field } from "formik";
-import swal from 'sweetalert'
+import swal from "sweetalert";
+import { Products } from "../../../Table/PaginationTable";
 
 interface Props {
   modalFunctionality: string;
+  productData : Products
+  closeForm : ()=> void
 }
 
 interface Categories {
-  categoryName: string;
+  categoryName: string,
 }
 
-function ProductForm({ modalFunctionality }: Props) {
-  const [age, setAge] = React.useState("");
+function ProductForm({ modalFunctionality, productData, closeForm }: Props) {
+  const [categoryOption, setCategoryOption] = React.useState(productData.productCategory);
   const [categoriesOptions, setCategoriesOptions] = React.useState<
     Categories[]
   >([]);
-  const [productImage, setProductImage] = React.useState(""); 
+  const [productImage, setProductImage] = React.useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+    setCategoryOption(event.target.value as string);
   };
 
   async function getCategories() {
@@ -48,30 +51,56 @@ function ProductForm({ modalFunctionality }: Props) {
     let formm = document.getElementById("form") as HTMLFormElement;
     const formdata = new FormData(formm);
 
-    await fetch("http://localhost:5000/addNewProduct", {
+    if (modalFunctionality == "add") {
+      await fetch("http://localhost:5000/addNewProduct", {
         method: "POST",
-        body: formdata, 
-        
+        body: formdata,
       })
-        .then((response) => response.json()
-        ).then((json)=>{
-          if (json.message == 'no file uploaded'){
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.message == "no file uploaded") {
             swal("Ops!", "No Uploaded Image!", "error");
-          }
-          else if (json.message == 'error'){
-            swal("Ops!", "There is an error, be sure that you enter all information correctly", "error");
-          }
-          else if (json.message == 'success'){
+          } else if (json.message == "error") {
+            swal(
+              "Ops!",
+              "There is an error, be sure that you enter all information correctly",
+              "error"
+            );
+          } else if (json.message == "success") {
             swal("Good Job!", "The Product Added Successfully!", "success");
+            closeForm(); 
           }
-        })
+        });
+    } else if (modalFunctionality == "update") {
+      await fetch(`http://localhost:5000/updateProduct/${productData.id}`, {
+        method: "PUT",
+        body: formdata,
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.message == "success") {
+            swal("Good job!", "Category Updated Successfully!", "success");
+            closeForm(); 
 
-
+          }
+        });
+    }
   };
+
+  
+
+  
 
   useEffect(() => {
     getCategories();
+    if (modalFunctionality == "update"){
+    setProductImage(`http://localhost:5000/${productData.productImg}`)
+    }
+    else if (modalFunctionality == "add"){
+      setProductImage("http://localhost:5000/download.png")
+    }
   }, []);
+
 
   const form = (props: any) => {
     return (
@@ -100,7 +129,7 @@ function ProductForm({ modalFunctionality }: Props) {
                 name="productCategory"
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={age}
+                value={categoryOption}
                 label="Category"
                 onChange={handleChange}
                 as={Select}
@@ -158,14 +187,16 @@ function ProductForm({ modalFunctionality }: Props) {
           </div>
           <div className={Styles.sectionTwo}>
             <div className={Styles.uploadedImageContainer}>
-              <img src={productImage} className={Styles.uploadedImg}></img>
+              <img  src={ productImage } className={Styles.uploadedImg}></img>
             </div>
             <div className={Styles.uploadButtonContainer}>
               <Button
-               onChange={(e: any) => {
-                setProductImage(URL.createObjectURL(e.target.files[0]));
-              }}
-              variant="contained" component="label">
+                onChange={(e: any) => {
+                  setProductImage(URL.createObjectURL(e.target.files[0]));
+                }}
+                variant="contained"
+                component="label"
+              >
                 Upload
                 <Field type="file" name="file" hidden />
               </Button>
@@ -183,7 +214,14 @@ function ProductForm({ modalFunctionality }: Props) {
 
   return (
     <>
-      <Formik initialValues={{}} onSubmit={onSubmit}>
+      <Formik initialValues={{
+        productName: productData.productName, 
+        productCode: productData.productCode, 
+        productQuantity: productData.productQuantity, 
+        productPrice: productData.productPrice, 
+        productCost: productData.productCost,
+        productDesc: productData.productDescription,
+      }} onSubmit={onSubmit}>
         {form}
       </Formik>
     </>
