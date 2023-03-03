@@ -254,6 +254,7 @@ bottom: 3px;
     display: flex;
     box-shadow: 2px 3px 20px 4px rgb(200, 200, 200);
     margin-bottom: 15px;
+    position: relative;
 }
 
 .productCartThumbnial{
@@ -316,4 +317,17 @@ bottom: 3px;
 
 .billTable > tr{
     height: 30px
+}
+
+.deleteItem{
+    position: absolute;
+    width: 20px;
+    height: 20px; 
+    top: 7px; 
+    right: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: rgb(188, 188, 188);
 }
