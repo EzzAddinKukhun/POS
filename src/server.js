@@ -293,15 +293,12 @@ app.put('/updateProduct/:id', uploadProductImg.single('file'), (req, res) => {
 
 
 //Sign up 
-
 app.post('/signUp', (req, res) => {
     let fullName = req.body.fullName;
     let username = req.body.userName;
     let password = req.body.password;
     let userType = "user";
     let isUsernameExist = false;
-
-
 
     mysqlConnection.query(`SELECT username FROM Users`, (err, rows, fileds) => {
         if (!err) {
@@ -337,5 +334,37 @@ app.post('/signUp', (req, res) => {
     })
 
 
+})
+
+
+app.put('/login', (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+    
+    mysqlConnection.query(`SELECT * FROM Users where username='${username}'`, (err, rows, fileds) => {
+        if (!err) {     
+            if (rows.length == 0) {
+                return res.json({
+                    message: 'this account does not exist'
+                });
+            }
+            else {
+                if (rows[0].password == password) {
+                    return res.json({
+                        message: 'success',
+                        userId: rows[0].userId,
+                        username: rows[0].username,
+                        userType: rows[0].userType
+                    });
+
+                } else {
+                    console.log("NOT EQUAL")
+                    return res.json({
+                        message: 'Password is wrong'
+                    });
+                }
+            }
+        }
+    })
 })
 

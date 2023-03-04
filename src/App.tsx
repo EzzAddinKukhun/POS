@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import PaginationTable from "./Components/Table/PaginationTable";
@@ -12,13 +12,50 @@ import reducers from "./Redux/reducers";
 
 function App() {
   let store = createStore(reducers);
-  // console.log(store);
+  const [username, setUsername] = React.useState("");
+  const [userType, setUserType] = React.useState("");
+
+  function renderUserPage(username: string, userType: string) {
+
+    if (username == "" && userType == ""){
+      return (
+        <Registrtion/>
+      ); 
+    }
+    else {
+      if (userType == 'user'){
+        return (
+          <Provider store={store}>
+        <POS />
+      </Provider>
+  
+        ); 
+      }
+      else if (userType == 'admin'){
+        return (
+          <Admin/>
+        ); 
+      }
+
+    }
+    }
+  
+  useEffect(() => {
+    let userDataFromLocalStorage = localStorage.getItem("Data");
+    if (userDataFromLocalStorage == null) {
+      setUsername("");
+      setUserType("");
+    } else {
+      let dataAfterParsed = JSON.parse(userDataFromLocalStorage || "{}");
+      setUsername(dataAfterParsed.username);
+      setUserType(dataAfterParsed.userType);
+    }
+  }, []);
+
   return (
     <>
-      {/* <Provider store={store}>
-        <POS />
-      </Provider> */}
-      <Registrtion/>
+      {renderUserPage(username, userType)}
+      
     </>
   );
 }
