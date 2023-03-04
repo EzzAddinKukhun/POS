@@ -7,6 +7,7 @@ import Styles from "./pos.module.css";
 import ProductsCart from "./ProductsCart";
 
 function Cart() {
+  
   return (
     <div className={Styles.cart}>
       <h3 style={{ textAlign: "center", paddingTop: 5 }}>Current Order</h3>

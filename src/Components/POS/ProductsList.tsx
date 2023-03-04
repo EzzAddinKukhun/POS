@@ -26,6 +26,9 @@ function ProductsList({ searchToken, selectedCategory, refreshTable }: Props) {
   const [pagesCount, setPagesCount] = useState(1);
   const [products, setProducts] = useState<Products[]>([]);
   const [categoryForFilter, setCategoryForFilter] = React.useState("");
+  const [currentCart, setCurrentCart] = useState("");
+  const cartSelected = useSelector((state: any) => state?.cartNameSelected?.cartNameSelected); 
+
   const dispatch = useDispatch();
 
   async function getProducts() {
@@ -78,6 +81,7 @@ function ProductsList({ searchToken, selectedCategory, refreshTable }: Props) {
                     productName: element.productName,
                     productPrice: element.productPrice,
                     productQuantity: 1,
+                    cartName: currentCart
                   })
                 )
               }
@@ -115,6 +119,7 @@ function ProductsList({ searchToken, selectedCategory, refreshTable }: Props) {
                     productName: element.productName,
                     productPrice: element.productPrice,
                     productQuantity: 1,
+                    cartName: currentCart
                   })
                 )
               }
@@ -152,6 +157,8 @@ function ProductsList({ searchToken, selectedCategory, refreshTable }: Props) {
                     productName: element.productName,
                     productPrice: element.productPrice,
                     productQuantity: 1,
+                    cartName: currentCart
+
                   })
                 )
               }
@@ -183,6 +190,7 @@ function ProductsList({ searchToken, selectedCategory, refreshTable }: Props) {
                     productName: element.productName,
                     productPrice: element.productPrice,
                     productQuantity: 1,
+                    cartName: currentCart
                   })
                 )
               }
@@ -205,6 +213,10 @@ function ProductsList({ searchToken, selectedCategory, refreshTable }: Props) {
     setToken(searchToken);
     setCategoryForFilter(selectedCategory);
   }, [searchToken, selectedCategory]);
+
+  useEffect(() => {
+    setCurrentCart(cartSelected)
+  }, [cartSelected]);
 
   
   return (

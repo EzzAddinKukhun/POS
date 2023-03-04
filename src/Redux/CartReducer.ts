@@ -1,14 +1,10 @@
 
 import { Products } from "../Components/Table/PaginationTable";
 
-// interface IAppState {
-//     products: Products[];
-//   } 
 
 const initialState = {
     products: [],
 }; 
-
 
 
 const cartReducer = (state: any=initialState , action: any) =>{
@@ -67,6 +63,9 @@ const cartReducer = (state: any=initialState , action: any) =>{
             }
 
         }
+
+        default:
+            return state
      
         
     }

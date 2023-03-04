@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Styles from "./pos.module.css";
 import ProductCart from "./ProductCart";
-import { useSelector } from "react-redux";
 import { Products } from "../Table/PaginationTable";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import reducers from "../../Redux/reducers";
 import { incQuantity, decQuantity, deleteProduct } from "../../Redux/actions";
 
 function ProductsCart() {
-  const product = useSelector((state: any) => state?.products);
   const [products, setProducts] = useState<Products[]>([]);
+  const [currentCart, setCurrentCart] = useState("");
+  const product = useSelector((state: any) => state?.products?.products);
+  const cartSelected = useSelector(
+    (state: any) => state?.cartNameSelected?.cartNameSelected
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setProducts(product);
+    setProducts(products);
   }, [product]);
+
+  useEffect(() => {
+    setCurrentCart(cartSelected);
+  }, [cartSelected]);
 
   function incrementQuantity(productCode: string) {
     dispatch(incQuantity(productCode));
@@ -28,24 +36,28 @@ function ProductsCart() {
   }
 
   return (
-    <div className={Styles.productsCart}>
-      {products?.map((item) => {
-        return (
-          <>
-            <ProductCart
-              productImgName={item.productImg}
-              productName={item.productName}
-              productPrice={item.productPrice}
-              productCode={item.productCode}
-              productQuantity={item.productQuantity}
-              incrementQuantity={() => incrementQuantity(item.productCode)}
-              decrementQuantity={() => decrementQuantity(item.productCode)}
-              deleteProduct={() => deleteItem(item.productCode)}
-            />
-          </>
-        );
-      })}
-    </div>
+      <div className={Styles.productsCart}>
+
+        {
+        product.filter(
+          (element: any) => element.cartName == currentCart
+        ).map((item:any) => {
+          return (
+            <>
+              <ProductCart
+                productImgName={item.productImg}
+                productName={item.productName}
+                productPrice={item.productPrice}
+                productCode={item.productCode}
+                productQuantity={item.productQuantity}
+                incrementQuantity={() => incrementQuantity(item.productCode)}
+                decrementQuantity={() => decrementQuantity(item.productCode)}
+                deleteProduct={() => deleteItem(item.productCode)}
+              />
+            </>
+          );
+        })}
+      </div>
   );
 }
 

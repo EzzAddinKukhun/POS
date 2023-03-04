@@ -3,12 +3,23 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { useSelector, useDispatch } from "react-redux";
+import { selectCart } from '../../Redux/actions';
 
 export default function CartsOptions() {
-  const [age, setAge] = React.useState('');
+  const [cuurentCart, setCuurentCart] = React.useState('');
+  const [cartsOptions, setCartsOptions] = React.useState([]); 
+  const dispatch = useDispatch(); 
+  const cartsNames = useSelector((state: any) => state?.carts?.cartsNames); 
+
+  React.useEffect (()=>{
+    setCartsOptions(cartsNames); 
+  }, [cartsNames])
+
 
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
+    setCuurentCart(event.target.value);
+    dispatch(selectCart(event.target.value)); 
   };
 
   return (
@@ -17,16 +28,20 @@ export default function CartsOptions() {
       <Select
         labelId="demo-select-small"
         id="demo-select-small"
-        value={age}
+        value={cuurentCart}
         label="Carts"
         onChange={handleChange}
       >
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
+        {
+          cartsOptions.map((option)=>{
+            return (
+              <MenuItem value={option}>{option}</MenuItem>
+            ); 
+          })
+        }
       </Select>
     </FormControl>
   );

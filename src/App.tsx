@@ -8,9 +8,10 @@ import POS from "./Components/POS/POS";
 import { Provider } from "react-redux";
 import { legacy_createStore as createStore } from "redux";
 import cartReducer from "./Redux/CartReducer";
+import reducers from "./Redux/reducers";
 
 function App() {
-  let store = createStore(cartReducer);
+  let store = createStore(reducers);
   // console.log(store);
   return (
     <>

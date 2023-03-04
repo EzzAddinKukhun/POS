@@ -2,32 +2,41 @@ import React, { useEffect } from "react";
 import Styles from "./pos.module.css";
 import { Button } from "@mui/material";
 import { TextField } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { checkoutCart } from "../../Redux/actions";
+import swal from "sweetalert";
 
 function Bill() {
-  const product = useSelector((state: any) => state?.products);
+  const product = useSelector((state: any) => state?.products?.products);
+  const cartSelected = useSelector((state: any) => state?.cartNameSelected?.cartNameSelected);
   const [totalBeforeTaxAndDiscount, setTotalBeforeTaxAndDiscount] = React.useState(0);
-  const [taxPercentage, setTaxPercentage] = React.useState(0); 
-  const [discountPercentage, setDiscountPercentage] = React.useState(0); 
-  const [total, setTotal] = React.useState(0); 
+  const [taxPercentage, setTaxPercentage] = React.useState(0);
+  const [discountPercentage, setDiscountPercentage] = React.useState(0);
+  const [total, setTotal] = React.useState(0);
+  const dispatch = useDispatch(); 
 
-  useEffect(()=>{
-    let totalBill = 0; 
-    let taxAmount = 0; 
-    let discountAmount = 0; 
-  
-    for (let i=0; i<product?.length ; i++){
-      totalBill += (product[i].productPrice)*(product[i].productQuantity)
+  function checkout (){
+    dispatch(checkoutCart(cartSelected));
+    swal("Checkedout!", `The Final Price of ${cartSelected} is ${total}`, "success");
+  }
+
+
+  useEffect(() => {
+    let totalBill = 0;
+    let taxAmount = 0;
+    let discountAmount = 0;
+
+    for (let i = 0; i < product?.length; i++) {
+      if (cartSelected == product[i].cartName) {
+        totalBill += product[i].productPrice * product[i].productQuantity;
+      }
     }
 
-    setTotalBeforeTaxAndDiscount(totalBill)
-    taxAmount = ((taxPercentage/100)*totalBill); 
-    discountAmount = ((discountPercentage/100)*totalBill); 
-    setTotal((totalBill + taxAmount - discountAmount))
-
-  }, [product,taxPercentage, discountPercentage])
-
+    setTotalBeforeTaxAndDiscount(totalBill);
+    taxAmount = (taxPercentage / 100) * totalBill;
+    discountAmount = (discountPercentage / 100) * totalBill;
+    setTotal(totalBill + taxAmount - discountAmount);
+  }, [product, taxPercentage, discountPercentage, cartSelected]);
 
   return (
     <table className={Styles.billTable}>
@@ -43,7 +52,7 @@ function Bill() {
             min={0}
             max={100}
             type="number"
-            onChange={(e)=>setTaxPercentage(parseInt(e.target.value))}
+            onChange={(e) => setTaxPercentage(parseInt(e.target.value))}
           ></input>
         </td>
       </tr>
@@ -55,7 +64,7 @@ function Bill() {
             min={0}
             max={100}
             type="number"
-            onChange={(e)=>setDiscountPercentage(parseInt(e.target.value))}
+            onChange={(e) => setDiscountPercentage(parseInt(e.target.value))}
           ></input>
         </td>
       </tr>
@@ -70,7 +79,7 @@ function Bill() {
           </Button>
         </td>
         <td>
-          <Button fullWidth variant="contained">
+          <Button onClick={()=>checkout()} fullWidth variant="contained">
             Checkout
           </Button>
         </td>

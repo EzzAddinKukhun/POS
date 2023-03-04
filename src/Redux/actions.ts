@@ -30,6 +30,28 @@ const deleteProduct = (productCode: string)=>{
     }
 }
 
+const addNewCart = (cartName: string)=>{
+    return {
+        type: "ADD_NEW_CART",
+        payload: cartName
+    }
+}
+
+const selectCart = (cartName: string)=>{
+    return {
+        type: "SELECT_CART",
+        payload: cartName
+    }
+}
 
 
-export {Add, incQuantity, decQuantity, deleteProduct}
+const checkoutCart = (cartName: string)=>{
+    return {
+        type: "CHECKOUT_CART",
+        payload: cartName
+    }
+}
+
+
+
+export {Add, incQuantity, decQuantity, deleteProduct, addNewCart, selectCart, checkoutCart}
