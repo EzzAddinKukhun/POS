@@ -37,9 +37,12 @@ function ProductsCart() {
 
   return (
       <div className={Styles.productsCart}>
-
         {
-        product.filter(
+        product.length == 0? 
+        <div className={Styles.notification}>
+          No Products Inside The Cart
+        </div>
+        :product.filter(
           (element: any) => element.cartName == currentCart
         ).map((item:any) => {
           return (

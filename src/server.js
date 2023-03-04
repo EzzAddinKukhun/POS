@@ -245,7 +245,7 @@ app.delete('/deleteProduct/:id', (req, res) => {
 })
 
 app.put('/updateProduct/:id', uploadProductImg.single('file'), (req, res) => {
-    console.log(req.body); 
+    console.log(req.body);
 
     let productName = req.body.productName;
     let productCode = req.body.productCode;
@@ -258,7 +258,7 @@ app.put('/updateProduct/:id', uploadProductImg.single('file'), (req, res) => {
     let fileName;
     let updateQuery;
 
-    console.log(req.file); 
+    console.log(req.file);
     if (req.file == undefined) {
         updateQuery = `UPDATE products SET productName='${productName}', productCode='${productCode}',productCategory='${productCategory}',productQuantity='${productQuantity}',productCost='${productCost}',productPrice='${productPrice}',productDescription='${productDesc}' where id = ?`;
     }
@@ -271,7 +271,7 @@ app.put('/updateProduct/:id', uploadProductImg.single('file'), (req, res) => {
         if (!err) {
             if (req.file != undefined) {
                 let oldImgName = rows[0].productImg;
-                console.log(oldImgName); 
+                console.log(oldImgName);
                 let imagePath = __dirname + '/ProductsImgs/' + oldImgName;
                 fs.unlinkSync(imagePath);
             }
@@ -288,6 +288,54 @@ app.put('/updateProduct/:id', uploadProductImg.single('file'), (req, res) => {
             console.log(err);
         }
     })
+
+})
+
+
+//Sign up 
+
+app.post('/signUp', (req, res) => {
+    let fullName = req.body.fullName;
+    let username = req.body.userName;
+    let password = req.body.password;
+    let userType = "user";
+    let isUsernameExist = false;
+
+
+
+    mysqlConnection.query(`SELECT username FROM Users`, (err, rows, fileds) => {
+        if (!err) {
+            for (let i = 0; i < rows.length; i++) {
+                if (rows[i].username == username) {
+                    isUsernameExist = true;
+                }
+            }
+            if (isUsernameExist) {
+                return res.json({
+                    message: 'username is exist'
+                });
+            }
+            else {
+                let insertQuery = "insert into Users (`userId`,`fullName`,`username`,`userType`, `password`) VALUES (?)";
+                let values = [0, fullName, username, userType, password];
+                mysqlConnection.query(insertQuery, [values], (err) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    return res.json({
+                        message: 'success'
+                    });
+                })
+
+            }
+
+
+        }
+        else {
+            console.log(err);
+        }
+    })
+
 
 })
 

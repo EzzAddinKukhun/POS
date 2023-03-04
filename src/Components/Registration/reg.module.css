@@ -67,3 +67,13 @@
 .logo{
     width: 250px;
 }
+
+.errorMessageBox{
+    color: red;
+    height: 30px; 
+    /* background-color: rgb(127, 166, 98); */
+    display: flex;
+    align-items: center;
+    /* margin-bottom: 10px; */
+    font-size: 12px;
+}

@@ -15,9 +15,10 @@ function App() {
   // console.log(store);
   return (
     <>
-      <Provider store={store}>
+      {/* <Provider store={store}>
         <POS />
-      </Provider>
+      </Provider> */}
+      <Registrtion/>
     </>
   );
 }

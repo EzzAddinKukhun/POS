@@ -24,10 +24,6 @@ interface Props {
 function CategoryForm({categoryId, imgName, categoryName, status }: Props) {
   const [categoryImage, setCategoryImage] = useState("");
 
-  if(categoryImage == ""){
-    console.log(true)
-  }
-
   const onSubmit = async (values: any) => {
     let formm = document.getElementById("form") as HTMLFormElement;
     const formdata = new FormData(formm);
