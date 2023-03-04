@@ -331,3 +331,11 @@ bottom: 3px;
     cursor: pointer;
     color: rgb(188, 188, 188);
 }
+
+.refreshButton{
+    margin-right: 10px;
+    padding: 5;
+    width: 25px;
+    height: 25px; 
+    cursor: pointer;
+}

@@ -15,10 +15,15 @@ interface Categories {
   productsNumber: number;
 }
 
-function CategoriesSlider() {
+interface Props{
+  getSelectedCategory: (selectedCategory: string) => void
+}
+
+function CategoriesSlider({getSelectedCategory}: Props) {
   const [categories, setCategories] = useState<Categories[]>([]);
+  const [selectedCategory, setSelectedCategory] = React.useState("")
+
   const settings = {
-    // dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 6,
@@ -51,12 +56,14 @@ function CategoriesSlider() {
         <Slider {...settings}>
           {categories.map((item, key) => {
             return (
+             <div style={{cursor: 'pointer'}} onClick={(e)=>getSelectedCategory(item.categoryName)}>
               <Fade delay={key*250}>
                 <Category
                   categoryName={item.categoryName}
                   categoryImgName={item.categoryImg}
                 />
               </Fade>
+              </div>
             );
           })}
         </Slider>
